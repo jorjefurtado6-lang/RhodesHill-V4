@@ -57,7 +57,7 @@ const content = {
       title: "Egan Crest",
       description: "A modern luxury residence in Las Vegas, designed to align your life with light, landscape, and purpose. Now in development: an invitation to shape a home from the ground up.",
       button: "Learn More",
-      image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80",
+      image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Front-Exterior-Entry.jpg",
       url: "https://egancrest.com/"
     },
     {
@@ -98,25 +98,43 @@ const content = {
         id: "closer-1",
         title: "Spanish Heights Estate",
         category: "Exterior Architecture",
-        image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=80"
+        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-138.jpg"
       },
       {
         id: "closer-2",
-        title: "Ascaya Glass Pavilion",
-        category: "Minimalist Interior",
-        image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1600&q=80"
+        title: "Spanish Heights Great Room",
+        category: "Interior Architecture",
+        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-101.jpg"
       },
       {
         id: "closer-3",
-        title: "Macdonald Highlands Villa",
-        category: "Great Room & Hearth",
-        image: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1600&q=80"
+        title: "Spanish Heights Dining & Kitchen",
+        category: "Culinary & Living Spaces",
+        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-133.jpg"
       },
       {
         id: "closer-4",
-        title: "Red Rock Horizon Estate",
-        category: "Desert Landscape & Pool",
-        image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1600&q=80"
+        title: "Spanish Heights Courtyard",
+        category: "Modernist Courtyard",
+        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Screenshot-2026-08-13-at-5.32.27-PM.png"
+      },
+      {
+        id: "closer-5",
+        title: "Spanish Heights Master Suite",
+        category: "Private Quarters",
+        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-109.jpg"
+      },
+      {
+        id: "closer-6",
+        title: "Spanish Heights Pool & Terrace",
+        category: "Outdoor Living",
+        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-141.jpg"
+      },
+      {
+        id: "closer-7",
+        title: "Desert Horizon Rear Grounds",
+        category: "Landscape & Sanctuary",
+        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Rear-Yard.jpg.webp"
       }
     ]
   },
@@ -502,9 +520,10 @@ export default function HarmonyPage() {
             </span>
             <h1 
               id="hero-title"
-              className="text-4xl sm:text-6xl lg:text-[107px] font-bold tracking-tight leading-tight lg:leading-[88px] mb-6 text-white"
+              style={{ fontSize: '61px', lineHeight: '62px', fontWeight: 'normal', textTransform: 'uppercase' }}
+              className="text-[61px] font-normal tracking-tight leading-[62px] mb-6 text-white uppercase"
             >
-              {content.hero.title}
+              We develop and build <br /> luxury custom homes.
             </h1>
             <p 
               id="hero-subtitle"
@@ -608,7 +627,7 @@ export default function HarmonyPage() {
                   alt={item.title}
                   fill
                   unoptimized
-                  className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                  className="object-cover w-full h-full transition-transform duration-1000 ease-out group-hover:scale-105"
                 />
                 <div className="absolute top-6 left-6 z-10">
                   <span className="bg-[#1C1C1A] text-white text-[10px] tracking-[0.2em] font-bold uppercase py-1.5 px-4 shadow-sm">
@@ -832,13 +851,16 @@ export default function HarmonyPage() {
 
 
       {/* Legacy Section */}
-      <section id="legacy" className="py-24 md:py-32 bg-[#F9F9F7] border-b border-[#1C1C1A]/5">
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
+      <section id="legacy" className="w-full py-24 md:py-32 bg-[#F9F9F7] border-b border-[#1C1C1A]/5">
+        <div className="w-full px-6 md:px-12 lg:px-20 xl:px-24">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 items-center">
             
             {/* Image Column */}
-            <div className="lg:col-span-5 relative">
-              <div className="relative aspect-[4/5] w-full bg-gray-100 overflow-hidden border border-[#1C1C1A]/5 shadow-sm">
+            <div className="lg:col-span-5 relative flex justify-center lg:justify-start">
+              <div 
+                className="relative max-w-full bg-gray-100 overflow-hidden border border-[#1C1C1A]/5 shadow-sm"
+                style={{ width: "539.391px", height: "662.203px" }}
+              >
                 <SafeImage 
                   src="https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Jim_Rhodes-photo.jpeg"
                   alt="Jim Rhodes - Founder of Harmony Homes"
