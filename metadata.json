@@ -1,0 +1,8 @@
+{
+  "name": "Remix Harmony Homes V2",
+  "description": "Bespoke luxury builder creating high-end modernist residences with meticulous design, curation, and execution.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
