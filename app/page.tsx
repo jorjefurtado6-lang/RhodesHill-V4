@@ -13,7 +13,6 @@ import {
   ArrowDown, 
   Maximize2, 
   Check, 
-  ArrowUpRight,
   Crown,
   Lock,
   Unlock,
@@ -27,141 +26,8 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Image from 'next/image';
-
-// Structured Content Data
-const content = {
-  nav: {
-    home: "Home",
-    about: "About",
-    properties: "Properties",
-    careers: "Legacy",
-    contact: "Contact",
-    cta: "Inquire"
-  },
-  hero: {
-    location: "Las Vegas, Nevada",
-    title: "We develop and build luxury custom homes.",
-    subtitle: "Residences shaped by architecture, landscape, and the way you choose to live",
-    scroll: "Scroll"
-  },
-  experience: {
-    label: "Discover",
-    title: "The Harmony Experience",
-    description: "From the first conversation to the final walkthrough, every Harmony home follows one client’s vision. We begin in pre-design, aligning style, goals, and budget, then move through design and construction as a single, considered process. The result is a home that’s entirely yours, delivered without compromise.",
-    button: "Learn More"
-  },
-  featuredDevelopments: [
-    {
-      id: "egan-crest",
-      status: "Coming 2026",
-      title: "Egan Crest",
-      description: "A modern luxury residence in Las Vegas, designed to align your life with light, landscape, and purpose. Now in development: an invitation to shape a home from the ground up.",
-      button: "Learn More",
-      image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Front-Exterior-Entry.jpg",
-      url: "https://egancrest.com/"
-    },
-    {
-      id: "skyfire-estate",
-      status: "Completed",
-      title: "SkyFire Estate",
-      description: "Every aspect of the process is uniquely guided for each client: from pre-design, where style, goals, and budget are set, through construction, to the finished work. SkyFire is that process, realized. Designed and built by Harmony.",
-      button: "Learn More",
-      image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Las-Vegas-Custom-Home.jpg",
-      url: "https://www.skyfirehomes.com/"
-    }
-  ],
-  signatureResidences: {
-    label: "Featured Work",
-    title: "Signature Residences",
-    projects: [
-      {
-        id: "signature-1",
-        title: "Signature Residence I",
-        location: "North Las Vegas",
-        description: "A single-level desert-modern estate organized around a central courtyard, private pool, and outdoor loggia.",
-        image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1600&q=80"
-      },
-      {
-        id: "signature-2",
-        title: "Signature Residence II",
-        location: "Las Vegas",
-        description: "An elevated multi-tiered modern sanctuary featuring floor-to-ceiling architectural glass and sweeping mountain views.",
-        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
-      }
-    ]
-  },
-  aCloserLook: {
-    label: "Explore The Portfolio",
-    title: "A Closer Look",
-    projects: [
-      {
-        id: "closer-1",
-        title: "Spanish Heights Estate",
-        category: "Exterior Architecture",
-        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-138.jpg"
-      },
-      {
-        id: "closer-2",
-        title: "Spanish Heights Great Room",
-        category: "Interior Architecture",
-        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-101.jpg"
-      },
-      {
-        id: "closer-3",
-        title: "Spanish Heights Dining & Kitchen",
-        category: "Culinary & Living Spaces",
-        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-133.jpg"
-      },
-      {
-        id: "closer-4",
-        title: "Spanish Heights Courtyard",
-        category: "Modernist Courtyard",
-        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Screenshot-2026-08-13-at-5.32.27-PM.png"
-      },
-      {
-        id: "closer-5",
-        title: "Spanish Heights Master Suite",
-        category: "Private Quarters",
-        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-109.jpg"
-      },
-      {
-        id: "closer-6",
-        title: "Spanish Heights Pool & Terrace",
-        category: "Outdoor Living",
-        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/5212-Spanish-Heights-Dr-141.jpg"
-      },
-      {
-        id: "closer-7",
-        title: "Desert Horizon Rear Grounds",
-        category: "Landscape & Sanctuary",
-        image: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Rear-Yard.jpg.webp"
-      }
-    ]
-  },
-  footer: {
-    cta: {
-      title: "Begin your custom home",
-      description: "Every Harmony home starts with a conversation — about your site, your lifestyle, and how you want to live. Tell us where you'd like to begin, and we'll take it from there.",
-      button: "Inquire"
-    },
-    contactInfo: {
-      title: "Information",
-      address: ["8912 Spanish Ridge Avenue", "Suite #200", "Las Vegas, NV 89148"],
-      email: "info@harmonyhomes.com",
-      phone: "702.570.7240"
-    },
-    usefulLinks: [
-      { label: "About", href: "#harmony-experience" },
-      { label: "Properties", href: "#featured-developments" },
-      { label: "Legacy", href: "#legacy" },
-      { label: "Contact", href: "#contact" },
-      { label: "Terms & Conditions", href: "#terms" },
-      { label: "Privacy Policy", href: "#privacy" }
-    ],
-    legal: "Renderings are artist's conceptions and may differ from the finished home. Features and specifications are subject to change without notice.",
-    copyright: "Harmony Homes © 2026 All Rights Reserved."
-  }
-};
+import { SiteContent } from '@/lib/content-types';
+import { defaultSiteContent } from '@/lib/default-content';
 
 function SafeImage({
   src,
@@ -172,74 +38,110 @@ function SafeImage({
   unoptimized = true,
   ...props
 }: any) {
-  const [hasError, setHasError] = useState(false);
+  const [failedSrc, setFailedSrc] = useState<string | null>(null);
 
   return (
     <Image
       {...props}
-      key={src}
-      src={hasError || !src ? fallbackSrc : src}
-      alt={alt || "Harmony Homes Architecture"}
+      src={failedSrc === src ? fallbackSrc : src}
+      alt={alt || "Harmony Residence"}
       fill={fill}
       unoptimized={unoptimized}
       className={className}
       referrerPolicy="no-referrer"
-      onError={() => setHasError(true)}
+      onError={() => {
+        setFailedSrc(src);
+      }}
     />
   );
 }
 
+function SafariVideo({
+  src,
+  poster,
+  className,
+}: {
+  src: string;
+  poster?: string;
+  className?: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoFailed, setVideoFailed] = useState(false);
+
+  const fallback = 'https://staging.harmonyhomes.com/wp-content/uploads/2026/08/hero-video.mp4';
+  const effectiveSrc = videoFailed ? fallback : src;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.defaultMuted = true;
+    video.muted = true;
+
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Autoplay policy fallback
+      });
+    }
+  }, [effectiveSrc]);
+
+  return (
+    <video
+      ref={videoRef}
+      key={effectiveSrc}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      poster={poster}
+      onError={() => {
+        if (!videoFailed) {
+          setVideoFailed(true);
+        }
+      }}
+      className={className}
+    >
+      <source src={effectiveSrc} type="video/mp4" />
+    </video>
+  );
+}
+
 export default function HarmonyPage() {
+  const [content, setContent] = useState<SiteContent>(defaultSiteContent);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [closerSlideIndex, setCloserSlideIndex] = useState(0);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const devVideoRef = useRef<HTMLVideoElement>(null);
+
+  // Fetch dynamic content from CMS API on mount
+  useEffect(() => {
+    async function loadContent() {
+      try {
+        const res = await fetch('/api/content');
+        if (res.ok) {
+          const resJson = await res.json();
+          if (resJson.success && resJson.data) {
+            setContent(resJson.data);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load dynamic site content:', err);
+      }
+    }
+    loadContent();
+  }, []);
+
+  const projectsCount = content.aCloserLook?.projects?.length || 1;
 
   const nextCloserSlide = () => {
-    setCloserSlideIndex((prev) => (prev + 1) % content.aCloserLook.projects.length);
+    setCloserSlideIndex((prev) => (prev + 1) % projectsCount);
   };
 
   const prevCloserSlide = () => {
-    setCloserSlideIndex((prev) => (prev - 1 + content.aCloserLook.projects.length) % content.aCloserLook.projects.length);
+    setCloserSlideIndex((prev) => (prev - 1 + projectsCount) % projectsCount);
   };
-
-  useEffect(() => {
-    const playVideos = () => {
-      [videoRef.current, devVideoRef.current].forEach((video) => {
-        if (video) {
-          video.defaultMuted = true;
-          video.muted = true;
-          video.setAttribute('playsinline', 'true');
-          video.setAttribute('webkit-playsinline', 'true');
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            playPromise.catch((err) => {
-              console.log("Video autoplay blocked or failed:", err);
-            });
-          }
-        }
-      });
-    };
-
-    playVideos();
-
-    // Fallback trigger for Safari iOS on first interaction
-    const handleFirstInteraction = () => {
-      playVideos();
-      window.removeEventListener('touchstart', handleFirstInteraction);
-      window.removeEventListener('click', handleFirstInteraction);
-    };
-
-    window.addEventListener('touchstart', handleFirstInteraction, { passive: true });
-    window.addEventListener('click', handleFirstInteraction, { passive: true });
-
-    return () => {
-      window.removeEventListener('touchstart', handleFirstInteraction);
-      window.removeEventListener('click', handleFirstInteraction);
-    };
-  }, []);
 
   // Form state
   const [formName, setFormName] = useState('');
@@ -251,36 +153,17 @@ export default function HarmonyPage() {
 
   // Testimonials Slider State
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const testimonials = [
-    {
-      id: 1,
-      quote: "Building with Harmony Homes was an exercise in absolute precision. Their unified architectural and construction team translated our abstract lifestyle goals into a desert masterpiece with meticulous discretion.",
-      author: "Eleanor Vance",
-      designation: "Egan Crest Resident & Design Patron",
-      project: "Custom Estate"
-    },
-    {
-      id: 2,
-      quote: "Every detail—from the orientation of the morning light across the limestone floor to the seamless alignment of the terrace doors—feels intentional. They didn't just build a house; they shaped how we live.",
-      author: "Arthur Pendleton",
-      designation: "SkyFire Estate Client & Collector",
-      project: "Modernist Residence"
-    },
-    {
-      id: 3,
-      quote: "The pre-design process aligned our goals perfectly before a single shovel touched the ground. Their attention to detail, execution speed, and ongoing support are entirely without parallel in modern architecture.",
-      author: "Dr. Marcus Sterling",
-      designation: "Henderson Estate Owner",
-      project: "Signature Residence I"
-    }
-  ];
+  const testimonials = content.testimonials && content.testimonials.length > 0
+    ? content.testimonials
+    : defaultSiteContent.testimonials;
 
   useEffect(() => {
+    if (testimonials.length <= 1) return;
     const timer = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % 3);
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 8500);
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonials.length]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -294,18 +177,33 @@ export default function HarmonyPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formName || !formEmail) return;
     setFormSubmitting(true);
-    setTimeout(() => {
+    
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'contact_form',
+          name: formName,
+          email: formEmail,
+          phone: formPhone,
+          message: formMessage
+        })
+      });
+    } catch (err) {
+      console.error('Lead error:', err);
+    } finally {
       setFormSubmitting(false);
       setFormSuccess(true);
       setFormName('');
       setFormEmail('');
       setFormPhone('');
       setFormMessage('');
-    }, 1200);
+    }
   };
 
   // VIP Concierge Widget State
@@ -326,7 +224,8 @@ export default function HarmonyPage() {
 
   const handleVipPasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (vipPasswordInput.trim().toUpperCase() === 'RH2024') {
+    const correctPassword = content.concierge?.vipPassword || 'RH2024';
+    if (vipPasswordInput.trim().toUpperCase() === correctPassword.trim().toUpperCase()) {
       setVipUnlocked(true);
       setVipPasswordError(false);
       setVipPasswordInput('');
@@ -335,10 +234,29 @@ export default function HarmonyPage() {
     }
   };
 
-  const handleVipBookingSubmit = (e: React.FormEvent) => {
+  const handleVipBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!vipBookingName || !vipBookingEmail) return;
-    setVipBookingSubmitted(true);
+    
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'vip_booking',
+          name: vipBookingName,
+          email: vipBookingEmail,
+          phone: vipBookingPhone,
+          date: vipBookingDate,
+          isHelicopterSelected: vipHelicopterSelected,
+          message: `VIP Booking for date: ${vipBookingDate} | Helicopter Service: ${vipHelicopterSelected ? 'YES' : 'NO'}`
+        })
+      });
+    } catch (err) {
+      console.error('VIP Lead error:', err);
+    } finally {
+      setVipBookingSubmitted(true);
+    }
   };
 
   const handleVipDownload = (docName: string) => {
@@ -348,8 +266,17 @@ export default function HarmonyPage() {
     }, 3500);
   };
 
+  const accentColor = content.theme?.primaryAccent || "#927A50";
+  const conciergePhone = content.concierge?.whatsAppNumber || "17025707240";
+  const conciergePrefill = encodeURIComponent(content.concierge?.whatsAppPrefill || "Hello, I would like exclusive information about Harmony Homes VIP Concierge.");
+
   return (
-    <div className="min-h-screen selection:bg-[#87735A] selection:text-[#F9F9F7] font-sans antialiased text-[#1C1C1A] bg-[#F9F9F7]">
+    <div 
+      className="min-h-screen selection:bg-[#87735A] selection:text-[#F9F9F7] font-sans antialiased text-[#1C1C1A] bg-[#F9F9F7]"
+      style={{
+        backgroundColor: content.theme?.backgroundColor || "#F9F9F7"
+      }}
+    >
       
       {/* 1. Header & Navigation */}
       <header 
@@ -370,8 +297,8 @@ export default function HarmonyPage() {
           >
             <div className="relative w-36 h-10 md:w-44 md:h-12">
               <Image 
-                src="https://priscilac3.sg-host.com/wp-content/uploads/2026/08/logo-harmoni.png" 
-                alt="Harmony Homes"
+                src={content.theme?.logoUrl || "https://priscilac3.sg-host.com/wp-content/uploads/2026/08/logo-harmoni.png"} 
+                alt={content.theme?.logoAlt || "Harmony Homes"}
                 fill
                 unoptimized
                 className={`object-contain transition-all duration-300 ${scrolled ? 'brightness-0' : 'brightness-0 invert'}`}
@@ -381,14 +308,14 @@ export default function HarmonyPage() {
             </div>
           </a>
 
-          {/* Links de Navegação (Desktop) */}
+          {/* Navigation Links (Desktop) */}
           <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
             {[
-              { id: 'hero', label: content.nav.home },
-              { id: 'harmony-experience', label: content.nav.about },
-              { id: 'featured-developments', label: content.nav.properties },
-              { id: 'legacy', label: content.nav.careers },
-              { id: 'contact', label: content.nav.contact }
+              { id: 'hero', label: content.nav?.home || "Home" },
+              { id: 'harmony-experience', label: content.nav?.about || "About" },
+              { id: 'featured-developments', label: content.nav?.properties || "Properties" },
+              { id: 'legacy', label: content.nav?.careers || "Legacy" },
+              { id: 'contact', label: content.nav?.contact || "Contact" }
             ].map((link) => (
               <a
                 key={link.id}
@@ -408,7 +335,7 @@ export default function HarmonyPage() {
           {/* Right Controls (CTA & Menu Toggle) */}
           <div className="flex items-center gap-4 md:gap-6">
             <a 
-              href="#contact"
+              href="#contact" 
               id="header-cta"
               className={`hidden md:inline-flex items-center justify-center text-[16px] font-bold uppercase tracking-widest border transition-all duration-300 px-6 py-2.5 rounded-none ${
                 scrolled 
@@ -417,7 +344,7 @@ export default function HarmonyPage() {
               }`}
               style={{ width: '160.1771px' }}
             >
-              {content.nav.cta}
+              {content.nav?.cta || "Inquire"}
             </a>
 
             <button
@@ -447,11 +374,11 @@ export default function HarmonyPage() {
           >
             <div className="flex flex-col gap-6 mt-4">
               {[
-                { id: 'hero', label: content.nav.home },
-                { id: 'harmony-experience', label: content.nav.about },
-                { id: 'featured-developments', label: content.nav.properties },
-                { id: 'legacy', label: content.nav.careers },
-                { id: 'contact', label: content.nav.contact }
+                { id: 'hero', label: content.nav?.home || "Home" },
+                { id: 'harmony-experience', label: content.nav?.about || "About" },
+                { id: 'featured-developments', label: content.nav?.properties || "Properties" },
+                { id: 'legacy', label: content.nav?.careers || "Legacy" },
+                { id: 'contact', label: content.nav?.contact || "Contact" }
               ].map((link, idx) => (
                 <motion.div
                   key={link.id}
@@ -478,7 +405,7 @@ export default function HarmonyPage() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full py-4 bg-[#87735A] hover:bg-[#6E5C47] text-white text-center text-xs tracking-widest font-bold uppercase transition-colors"
               >
-                {content.nav.cta}
+                {content.nav?.cta || "Inquire"}
               </a>
             </div>
           </motion.div>
@@ -486,24 +413,17 @@ export default function HarmonyPage() {
       </AnimatePresence>
 
 
-      {/* 2. Seção Principal (Hero) */}
+      {/* 2. Hero Section */}
       <section 
         id="hero"
         className="relative min-h-screen flex flex-col justify-between text-white overflow-hidden bg-black"
       >
         <div className="absolute inset-0 z-0 opacity-80 select-none pointer-events-none overflow-hidden">
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            poster="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1920&q=80"
+          <SafariVideo
+            src={content.hero?.videoUrl || "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/hero-video.mp4"}
+            poster={content.hero?.posterUrl || "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1920&q=80"}
             className="w-full h-full object-cover scale-105"
-          >
-            <source src="https://staging.harmonyhomes.com/wp-content/uploads/2026/08/hero-video.mp4" type="video/mp4" />
-          </video>
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/35 to-black/80" />
         </div>
 
@@ -516,20 +436,20 @@ export default function HarmonyPage() {
               id="hero-eyebrow"
               className="text-xs md:text-sm tracking-[0.3em] font-medium uppercase text-white block mb-4"
             >
-              {content.hero.location}
+              {content.hero?.location || "Las Vegas, Nevada"}
             </span>
             <h1 
               id="hero-title"
               style={{ fontSize: '61px', lineHeight: '62px', fontWeight: 'normal', textTransform: 'uppercase' }}
               className="text-[61px] font-normal tracking-tight leading-[62px] mb-6 text-white uppercase"
             >
-              We develop and build <br /> luxury custom homes.
+              {content.hero?.title || "We develop and build luxury custom homes."}
             </h1>
             <p 
               id="hero-subtitle"
               className="font-sans text-[21px] text-white/80 font-light tracking-wide leading-relaxed max-w-2xl mb-10"
             >
-              {content.hero.subtitle}
+              {content.hero?.subtitle || "Residences shaped by architecture, landscape, and the way you choose to live"}
             </p>
             <div className="flex flex-wrap gap-4 mb-4">
               <a 
@@ -550,7 +470,7 @@ export default function HarmonyPage() {
               id="hero-scroll"
               className="flex items-center gap-3 text-white/70 hover:text-white transition-colors group text-xs tracking-widest uppercase"
             >
-              <span>{content.hero.scroll}</span>
+              <span>{content.hero?.scroll || "Scroll"}</span>
               <span className="p-1 border border-white/20 rounded-full group-hover:translate-y-1 transition-transform">
                 <ArrowDown size={14} />
               </span>
@@ -560,7 +480,7 @@ export default function HarmonyPage() {
       </section>
 
 
-      {/* 3. Seção: The Harmony Experience */}
+      {/* 3. The Harmony Experience */}
       <section 
         id="harmony-experience"
         className="py-24 md:py-32 bg-[#F9F9F7] relative border-b border-[#1C1C1A]/5"
@@ -571,27 +491,27 @@ export default function HarmonyPage() {
               id="experience-eyebrow"
               className="text-[16px] tracking-[0.3em] font-semibold text-[#87735A] uppercase block mb-3"
             >
-              {content.experience.label}
+              {content.experience?.label || "Discover"}
             </span>
             <h2 
               id="experience-title"
               className="font-serif text-[41px] font-bold text-[#1C1C1A] mb-8"
               style={{ fontSize: "41px" }}
             >
-              {content.experience.title}
+              {content.experience?.title || "The Harmony Experience"}
             </h2>
             <p 
               id="experience-desc"
               className="font-sans text-base md:text-lg text-[#1C1C1A]/70 leading-relaxed font-light mb-10"
             >
-              {content.experience.description}
+              {content.experience?.description}
             </p>
             <a 
               href="#featured-developments"
               id="experience-btn"
               className="inline-flex items-center gap-2 bg-[#927A50] hover:bg-[#7D6740] text-white text-xs font-bold uppercase tracking-widest px-8 py-4 transition-all duration-300 shadow-md hover:-translate-y-0.5"
             >
-              <span>{content.experience.button}</span>
+              <span>{content.experience?.button || "Learn More"}</span>
               <ArrowRight size={14} />
             </a>
           </div>
@@ -600,7 +520,7 @@ export default function HarmonyPage() {
 
 
 
-      {/* 4. Projetos em Destaque & Desenvolvimentos */}
+      {/* 4. Featured Developments */}
       <section 
         id="featured-developments"
         className="py-24 md:py-32 bg-white border-b border-[#1C1C1A]/5"
@@ -610,12 +530,12 @@ export default function HarmonyPage() {
             DEVELOPMENTS
           </span>
           <h2 className="font-serif text-[41px] font-bold text-[#1C1C1A]" style={{ fontSize: "41px" }}>
-            Featured Projects & Developments
+            Featured Projects &amp; Developments
           </h2>
         </div>
 
         <div className="space-y-32">
-          {content.featuredDevelopments.map((item) => (
+          {(content.featuredDevelopments || []).map((item) => (
             <div 
               key={item.id}
               id={`dev-item-${item.id}`}
@@ -654,7 +574,7 @@ export default function HarmonyPage() {
                   rel={item.url?.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="inline-flex items-center gap-2 border border-[#927A50] text-[#927A50] hover:bg-[#927A50] hover:text-white text-xs font-bold uppercase tracking-widest px-8 py-4 transition-all duration-300 cursor-pointer shadow-sm"
                 >
-                  <span>{item.button}</span>
+                  <span>{item.button || "Learn More"}</span>
                   <ArrowRight size={14} />
                 </a>
               </div>
@@ -664,24 +584,17 @@ export default function HarmonyPage() {
 
         {/* Video full width below developments */}
         <div className="mt-24 md:mt-32 w-full relative h-[450px] md:h-[650px] overflow-hidden bg-black">
-          <video
-            ref={devVideoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
+          <SafariVideo
+            src={content.experience?.videoUrl || "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/hero-video.mp4"}
             poster="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1920&q=80"
             className="w-full h-full object-cover"
-          >
-            <source src="https://staging.harmonyhomes.com/wp-content/uploads/2026/08/hero-video.mp4" type="video/mp4" />
-          </video>
+          />
           <div className="absolute inset-0 bg-black/20" />
         </div>
       </section>
 
 
-      {/* 5. Seção: Signature Residences */}
+      {/* 5. Signature Residences */}
       <section 
         id="signature-residences"
         className="py-24 md:py-32 bg-[#F9F9F7] border-b border-[#1C1C1A]/5"
@@ -689,15 +602,15 @@ export default function HarmonyPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="mb-16 text-center">
             <span id="signature-label" className="text-[16px] tracking-[0.3em] font-semibold text-[#87735A] uppercase block mb-3">
-              {content.signatureResidences.label}
+              {content.signatureResidences?.label || "FEATURED PROJECTS"}
             </span>
             <h2 id="signature-title" className="font-serif text-[41px] font-bold text-[#1C1C1A]" style={{ fontSize: "41px" }}>
-              {content.signatureResidences.title}
+              {content.signatureResidences?.title || "Selected developments across Las Vegas."}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {content.signatureResidences.projects.map((proj) => (
+            {(content.signatureResidences?.projects || []).map((proj) => (
               <div 
                 key={proj.id}
                 id={`signature-card-${proj.id}`}
@@ -712,7 +625,7 @@ export default function HarmonyPage() {
                   />
                   <div className="absolute top-4 left-4 z-10">
                     <span className="bg-[#927A50] text-white text-[9px] tracking-widest font-bold uppercase py-1 px-3">
-                      {proj.location}
+                      {proj.badge}
                     </span>
                   </div>
                 </div>
@@ -720,7 +633,7 @@ export default function HarmonyPage() {
                 <div className="p-8 flex flex-col justify-between flex-grow">
                   <div>
                     <span className="text-[16px] tracking-widest text-[#927A50] uppercase block mb-1">
-                      {proj.location}
+                      {proj.subheading}
                     </span>
                     <h3 className="font-serif text-xl font-bold text-[#1C1C1A] mb-3">
                       {proj.title}
@@ -730,11 +643,11 @@ export default function HarmonyPage() {
                     </p>
                   </div>
                   <a 
-                    href="#contact" 
+                    href={proj.url || "#contact"} 
                     className="inline-flex items-center justify-center gap-2 bg-[#927A50] hover:bg-[#7D6740] text-white text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-sm hover:scale-[1.02] active:scale-95 cursor-pointer"
                     style={{ width: '290.368px', height: '54.1979px' }}
                   >
-                    <span>Inquire</span>
+                    <span>{proj.buttonText || "Inquire"}</span>
                     <ArrowRight size={14} />
                   </a>
                 </div>
@@ -745,7 +658,7 @@ export default function HarmonyPage() {
       </section>
 
 
-      {/* 6. Seção: A Closer Look - Slide Carousel */}
+      {/* 6. A Closer Look - Slide Carousel */}
       <section 
         id="a-closer-look"
         className="py-24 md:py-32 bg-white border-b border-[#1C1C1A]/5"
@@ -755,17 +668,17 @@ export default function HarmonyPage() {
           <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <span id="closer-label" className="text-[16px] tracking-[0.3em] font-semibold text-[#927A50] uppercase block mb-3">
-                {content.aCloserLook.label}
+                {content.aCloserLook?.label || "Explore The Portfolio"}
               </span>
               <h2 id="closer-title" className="font-serif text-[41px] font-bold text-[#1C1C1A]" style={{ fontSize: "41px" }}>
-                {content.aCloserLook.title}
+                {content.aCloserLook?.title || "A Closer Look"}
               </h2>
             </div>
 
             {/* Navigation Controls */}
             <div className="flex items-center gap-6">
               <span className="text-sm tracking-widest text-[#1C1C1A]/70 font-semibold uppercase">
-                0{closerSlideIndex + 1} <span className="text-[#927A50]">/</span> 0{content.aCloserLook.projects.length}
+                0{closerSlideIndex + 1} <span className="text-[#927A50]">/</span> 0{content.aCloserLook?.projects?.length || 1}
               </span>
               <div className="flex items-center gap-2">
                 <button
@@ -789,53 +702,55 @@ export default function HarmonyPage() {
           {/* Slider Content */}
           <div className="relative overflow-hidden">
             <AnimatePresence mode="wait">
-              <motion.div
-                key={closerSlideIndex}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.35, ease: "easeInOut" }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
-              >
-                {[
-                  content.aCloserLook.projects[closerSlideIndex],
-                  content.aCloserLook.projects[(closerSlideIndex + 1) % content.aCloserLook.projects.length]
-                ].map((item, localIdx) => {
-                  const actualIdx = (closerSlideIndex + localIdx) % content.aCloserLook.projects.length;
-                  return (
-                    <div 
-                      key={item.id}
-                      id={`closer-item-${item.id}`}
-                      onClick={() => setLightboxIndex(actualIdx)}
-                      className="relative aspect-[3/2] group cursor-pointer bg-gray-100 overflow-hidden border border-[#1C1C1A]/5 shadow-sm hover:shadow-md transition-all duration-300"
-                    >
-                      <SafeImage 
-                        src={item.image} 
-                        alt={item.title}
-                        fill
-                        className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8 text-white">
-                        <span className="text-[10px] tracking-[0.25em] uppercase text-white/80 block mb-2">
-                          {item.category}
-                        </span>
-                        <h3 className="font-serif text-xl md:text-2xl font-bold flex items-center justify-between">
-                          {item.title}
-                          <Maximize2 size={18} className="text-white/85" />
-                        </h3>
+              {content.aCloserLook?.projects && content.aCloserLook.projects.length > 0 && (
+                <motion.div
+                  key={closerSlideIndex}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -40 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12"
+                >
+                  {[
+                    content.aCloserLook.projects[closerSlideIndex],
+                    content.aCloserLook.projects[(closerSlideIndex + 1) % content.aCloserLook.projects.length]
+                  ].filter(Boolean).map((item, localIdx) => {
+                    const actualIdx = (closerSlideIndex + localIdx) % content.aCloserLook.projects.length;
+                    return (
+                      <div 
+                        key={item.id || localIdx}
+                        id={`closer-item-${item.id}`}
+                        onClick={() => setLightboxIndex(actualIdx)}
+                        className="relative aspect-[3/2] group cursor-pointer bg-gray-100 overflow-hidden border border-[#1C1C1A]/5 shadow-sm hover:shadow-md transition-all duration-300"
+                      >
+                        <SafeImage 
+                          src={item.image} 
+                          alt={item.title}
+                          fill
+                          className="object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8 text-white">
+                          <span className="text-[10px] tracking-[0.25em] uppercase text-white/80 block mb-2">
+                            {item.category}
+                          </span>
+                          <h3 className="font-serif text-xl md:text-2xl font-bold flex items-center justify-between">
+                            {item.title}
+                            <Maximize2 size={18} className="text-white/85" />
+                          </h3>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </motion.div>
+                    );
+                  })}
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
 
           {/* Dot Indicators */}
           <div className="mt-10 flex justify-center items-center gap-3">
-            {content.aCloserLook.projects.map((item, idx) => (
+            {(content.aCloserLook?.projects || []).map((item, idx) => (
               <button
-                key={item.id}
+                key={item.id || idx}
                 onClick={() => setCloserSlideIndex(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 className={`h-1.5 transition-all duration-300 cursor-pointer ${
@@ -850,69 +765,60 @@ export default function HarmonyPage() {
       </section>
 
 
-      {/* Legacy Section */}
-      <section id="legacy" className="w-full py-24 md:py-32 bg-[#F9F9F7] border-b border-[#1C1C1A]/5">
-        <div className="w-full px-6 md:px-12 lg:px-20 xl:px-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-16 items-center">
-            
-            {/* Image Column */}
-            <div className="lg:col-span-5 relative flex justify-center lg:justify-start">
-              <div 
-                className="relative max-w-full bg-gray-100 overflow-hidden border border-[#1C1C1A]/5 shadow-sm"
-                style={{ width: "539.391px", height: "662.203px" }}
-              >
-                <SafeImage 
-                  src="https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Jim_Rhodes-photo.jpeg"
-                  alt="Jim Rhodes - Founder of Harmony Homes"
-                  fill
-                  className="object-cover transition-transform duration-1000 ease-out hover:scale-105"
-                  fallbackSrc="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1200&q=80"
-                />
-              </div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 border-r border-b border-[#927A50]/20 pointer-events-none hidden md:block" />
-            </div>
+      {/* 7. Legacy Section */}
+      <section id="legacy" className="w-full bg-[#FAFAF8] border-b border-[#1C1C1A]/5 overflow-hidden">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 items-stretch">
+          
+          {/* Left Column: Full-Bleed Image */}
+          <div className="relative w-full min-h-[420px] sm:min-h-[520px] lg:min-h-[750px] bg-stone-900 overflow-hidden">
+            <SafeImage 
+              src={content.legacy?.image || "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Jim_Rhodes-photo.jpeg"}
+              alt="Jim Rhodes - Founder of Harmony Homes"
+              fill
+              className="object-cover object-top transition-transform duration-1000 ease-out hover:scale-105"
+              fallbackSrc="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
+            />
+          </div>
 
-            {/* Content Column */}
-            <div className="lg:col-span-7 flex flex-col justify-center">
-              <span className="text-[16px] tracking-[0.3em] font-semibold text-[#87735A] uppercase block mb-3">
-                Our Founder
+          {/* Right Column: Editorial Typographic Content */}
+          <div className="flex flex-col justify-center px-8 sm:px-12 md:px-16 lg:px-16 xl:px-24 py-16 sm:py-20 lg:py-24 bg-white">
+            <div className="max-w-xl">
+              <span className="text-[11px] sm:text-xs tracking-[0.3em] font-medium text-stone-500 uppercase block mb-6 font-sans">
+                {content.legacy?.kicker || "CHAPTER 01 — OUR FOUNDER & LEGACY"}
               </span>
-              <h2 className="font-serif text-[41px] font-bold text-[#1C1C1A] leading-tight mb-8" style={{ fontSize: "41px" }}>
-                A LAS VEGAS LEGACY
+              
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[50px] text-[#1C1C1A] leading-[1.12] tracking-tight mb-8 font-normal">
+                {content.legacy?.title || "For those who expect more than excellence."}
               </h2>
               
-              <div className="space-y-6 text-[#1C1C1A]/80 font-light leading-relaxed text-base md:text-lg">
-                <p>
-                  Harmony Homes is led by Jim Rhodes, a Las Vegas native whose career in residential construction began as a carpenter and grew into one of Nevada&apos;s most recognized homebuilding legacies.
-                </p>
-                <p>
-                  Over more than four decades, Jim has planned, built, and sold more than 12,000 homes while helping shape communities throughout the Las Vegas Valley.
-                </p>
-                <p>
-                  His understanding extends beyond the home itself to the land, infrastructure, and vision required to create places of lasting value. That depth of experience informs every Harmony Homes residence today.
-                </p>
-                <p className="font-medium text-[#1C1C1A]">
-                  For Jim, building has never been simply about construction. It is about seeing what a place can become and having the knowledge, determination, and experience to bring it to life.
-                </p>
+              <div className="space-y-6 text-[#2C2C2A]/85 font-normal leading-[1.75] text-[15px] sm:text-base">
+                {(content.legacy?.paragraphs || []).map((p, idx) => (
+                  <p key={idx}>{p}</p>
+                ))}
+                {content.legacy?.quote && (
+                  <p className="font-serif italic text-[#1C1C1A] text-lg sm:text-xl leading-relaxed text-stone-800 pt-2 border-l-2 border-[#927A50]/40 pl-5">
+                    {content.legacy.quote}
+                  </p>
+                )}
               </div>
 
-              <div className="mt-10">
+              <div className="mt-10 pt-4 flex items-center gap-6">
                 <a 
-                  href="/legacy" 
-                  className="inline-flex items-center justify-center gap-2 bg-[#927A50] hover:bg-[#7D6740] text-white text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-md hover:scale-[1.02] active:scale-95 cursor-pointer px-8 py-4"
+                  href={content.legacy?.ctaLink || "/legacy"} 
+                  className="inline-flex items-center gap-3 bg-[#1C1C1A] hover:bg-[#927A50] text-white text-xs font-semibold uppercase tracking-[0.2em] transition-all duration-300 px-8 py-4 shadow-sm hover:scale-[1.02] active:scale-95 cursor-pointer"
                 >
-                  <span>Discover Jim&apos;s Story</span>
+                  <span>{content.legacy?.ctaText || "Discover Jim's Story"}</span>
                   <ArrowRight size={14} />
                 </a>
               </div>
             </div>
-
           </div>
+
         </div>
       </section>
 
 
-      {/* Testimonials Section (Penultimate Section) */}
+      {/* 8. Testimonials Section */}
       <section 
         id="testimonials-slider"
         className="py-24 bg-[#F2F1EC] border-b border-[#1C1C1A]/5 relative overflow-hidden"
@@ -927,28 +833,30 @@ export default function HarmonyPage() {
 
           <div className="relative min-h-[220px] flex items-center justify-center">
             <AnimatePresence mode="wait">
-              <motion.div
-                key={currentTestimonial}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="w-full"
-              >
-                <p 
-                  className="font-serif text-lg md:text-2xl font-light text-[#1C1C1A]/80 italic leading-relaxed max-w-3xl mx-auto mb-8"
+              {testimonials.length > 0 && (
+                <motion.div
+                  key={currentTestimonial}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  className="w-full"
                 >
-                  &ldquo;{testimonials[currentTestimonial].quote}&rdquo;
-                </p>
-                <div className="space-y-1">
-                  <p className="font-sans text-xs md:text-sm font-semibold text-[#1C1C1A]">
-                    {testimonials[currentTestimonial].author}
+                  <p 
+                    className="font-serif text-lg md:text-2xl font-light text-[#1C1C1A]/80 italic leading-relaxed max-w-3xl mx-auto mb-8"
+                  >
+                    &ldquo;{testimonials[currentTestimonial]?.quote}&rdquo;
                   </p>
-                  <p className="font-sans text-[10px] md:text-xs text-[#927A50] tracking-wider uppercase font-light">
-                    {testimonials[currentTestimonial].designation} &bull; {testimonials[currentTestimonial].project}
-                  </p>
-                </div>
-              </motion.div>
+                  <div className="space-y-1">
+                    <p className="font-sans text-xs md:text-sm font-semibold text-[#1C1C1A]">
+                      {testimonials[currentTestimonial]?.author}
+                    </p>
+                    <p className="font-sans text-[10px] md:text-xs text-[#927A50] tracking-wider uppercase font-light">
+                      {testimonials[currentTestimonial]?.designation} &bull; {testimonials[currentTestimonial]?.project}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
 
@@ -986,7 +894,7 @@ export default function HarmonyPage() {
           </div>
         </div>
 
-        {/* Subtle architectural design lines background to enrich the look in an elegant modernist way */}
+        {/* Architectural lines background */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[0.03] select-none z-0">
           <div className="absolute top-0 left-1/4 w-[1px] h-full bg-black" />
           <div className="absolute top-0 left-3/4 w-[1px] h-full bg-black" />
@@ -995,7 +903,7 @@ export default function HarmonyPage() {
       </section>
 
 
-      {/* 7. Rodapé (Footer) */}
+      {/* 9. Footer */}
       <footer 
         id="contact"
         className="bg-[#1C1C1A] text-white py-24 md:py-32 relative overflow-hidden"
@@ -1007,10 +915,10 @@ export default function HarmonyPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               <div className="lg:col-span-8">
                 <h2 id="footer-cta-title" className="font-serif text-[41px] font-bold text-white mb-4" style={{ fontSize: "41px" }}>
-                  {content.footer.cta.title}
+                  {content.footer?.cta?.title || "START YOUR PROJECT"}
                 </h2>
                 <p id="footer-cta-desc" className="font-sans text-sm md:text-base text-white font-light leading-relaxed">
-                  {content.footer.cta.description}
+                  {content.footer?.cta?.description}
                 </p>
               </div>
 
@@ -1020,7 +928,7 @@ export default function HarmonyPage() {
                   id="footer-cta-btn"
                   className="bg-[#927A50] hover:bg-[#7D6740] text-white text-xs font-bold uppercase tracking-widest px-8 py-4 transition-all duration-300 inline-flex items-center gap-2"
                 >
-                  <span>{content.footer.cta.button}</span>
+                  <span>{content.footer?.cta?.button || "Inquire"}</span>
                   <ArrowRight size={14} />
                 </a>
               </div>
@@ -1033,11 +941,8 @@ export default function HarmonyPage() {
             {/* Contact Information */}
             <div className="lg:col-span-5 space-y-8">
               <div>
-                <span className="text-[10px] tracking-[0.3em] font-semibold text-[#927A50] uppercase block mb-3">
-                  DIRECTORY
-                </span>
                 <h3 id="info-title" className="font-serif text-[41px] font-bold text-white mb-6" style={{ fontSize: "41px" }}>
-                  {content.footer.contactInfo.title}
+                  {content.footer?.contactInfo?.title || "Contact"}
                 </h3>
               </div>
 
@@ -1046,7 +951,7 @@ export default function HarmonyPage() {
                   <MapPin size={18} className="text-[#927A50] shrink-0 mt-0.5" />
                   <div>
                     <p className="font-bold uppercase tracking-wider text-white mb-1">Address</p>
-                    {content.footer.contactInfo.address.map((line, idx) => (
+                    {(content.footer?.contactInfo?.address || []).map((line, idx) => (
                       <p key={idx} className="font-light">{line}</p>
                     ))}
                   </div>
@@ -1056,7 +961,7 @@ export default function HarmonyPage() {
                   <Mail size={18} className="text-[#927A50] shrink-0 mt-0.5" />
                   <div>
                     <p className="font-bold uppercase tracking-wider text-white mb-1">Email</p>
-                    <p className="font-light">{content.footer.contactInfo.email}</p>
+                    <p className="font-light">{content.footer?.contactInfo?.email || "info@harmonyhomes.com"}</p>
                   </div>
                 </div>
 
@@ -1064,7 +969,7 @@ export default function HarmonyPage() {
                   <Phone size={18} className="text-[#927A50] shrink-0 mt-0.5" />
                   <div>
                     <p className="font-bold uppercase tracking-wider text-white mb-1">Phone</p>
-                    <p className="font-light">{content.footer.contactInfo.phone}</p>
+                    <p className="font-light">{content.footer?.contactInfo?.phone || "702.570.7240"}</p>
                   </div>
                 </div>
               </div>
@@ -1072,8 +977,8 @@ export default function HarmonyPage() {
 
             {/* Form */}
             <div className="lg:col-span-7 bg-white/[0.02] p-8 border border-white/5">
-              <h4 className="font-serif text-xl font-light text-white mb-6 pb-3 border-b border-white/10">
-                Send a Message
+              <h4 className="font-serif text-xl font-light text-white mb-6 pb-3 border-b border-white/10 uppercase tracking-wider">
+                Contact Us
               </h4>
 
               {formSuccess ? (
@@ -1085,7 +990,7 @@ export default function HarmonyPage() {
                   <p className="text-xs text-white">We will respond to your inquiry shortly.</p>
                   <button 
                     onClick={() => setFormSuccess(false)}
-                    className="text-[10px] uppercase font-bold tracking-widest text-[#927A50] underline mt-4"
+                    className="text-[10px] uppercase font-bold tracking-widest text-[#927A50] underline mt-4 cursor-pointer"
                   >
                     Send another inquiry
                   </button>
@@ -1137,11 +1042,11 @@ export default function HarmonyPage() {
 
           </div>
 
-          {/* Links Úteis */}
+          {/* Useful Links */}
           <div className="border-t border-white/10 pt-10 pb-8">
             <span className="text-[10px] tracking-[0.2em] uppercase text-white block mb-4">USEFUL LINKS</span>
             <div className="flex flex-wrap gap-x-8 gap-y-3 text-xs font-light text-white">
-              {content.footer.usefulLinks.map((link, idx) => (
+              {(content.footer?.usefulLinks || []).map((link, idx) => (
                 <a key={idx} href={link.href} className="hover:underline transition-colors">
                   {link.label}
                 </a>
@@ -1149,19 +1054,28 @@ export default function HarmonyPage() {
             </div>
           </div>
 
-          {/* Avisos Legais & Direitos Autorais */}
-          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[10px] text-white leading-relaxed font-light">
-            <p className="max-w-xl">{content.footer.legal}</p>
-            <p className="shrink-0">{content.footer.copyright}</p>
+          {/* Legal, Copyright & Admin Access */}
+          <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[10px] text-white/70 leading-relaxed font-light">
+            <p className="max-w-xl">{content.footer?.legal}</p>
+            <div className="flex items-center gap-4 shrink-0">
+              <p>{content.footer?.copyright}</p>
+              <span className="text-white/30">|</span>
+              <a 
+                href="/admin" 
+                className="hover:text-white transition-colors underline uppercase tracking-widest text-[9px] font-semibold text-[#C5A059]"
+              >
+                Admin Panel
+              </a>
+            </div>
           </div>
 
         </div>
       </footer>
 
 
-      {/* Lightbox Modal for Closer Look Gallery */}
+      {/* Lightbox Modal for Gallery */}
       <AnimatePresence>
-        {lightboxIndex !== null && (
+        {lightboxIndex !== null && content.aCloserLook?.projects && (
           <div 
             id="lightbox-backdrop"
             className="fixed inset-0 z-50 flex flex-col justify-between p-4 bg-black/95 text-white"
@@ -1175,7 +1089,7 @@ export default function HarmonyPage() {
               </span>
               <button 
                 onClick={() => setLightboxIndex(null)}
-                className="p-2 text-white hover:text-[#87735A] transition-colors"
+                className="p-2 text-white hover:text-[#87735A] transition-colors cursor-pointer"
                 aria-label="Close"
               >
                 <X size={24} />
@@ -1185,15 +1099,15 @@ export default function HarmonyPage() {
             <div className="flex items-center justify-between flex-grow max-w-7xl mx-auto w-full relative">
               <button 
                 onClick={() => setLightboxIndex((prev) => prev !== null ? (prev === 0 ? content.aCloserLook.projects.length - 1 : prev - 1) : null)}
-                className="p-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-all absolute left-4 z-10"
+                className="p-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-all absolute left-4 z-10 cursor-pointer"
               >
                 <ChevronLeft size={24} />
               </button>
 
               <div className="relative w-full aspect-video md:aspect-[16/10] max-h-[70vh] flex items-center justify-center p-4">
                 <SafeImage 
-                  src={content.aCloserLook.projects[lightboxIndex].image}
-                  alt={content.aCloserLook.projects[lightboxIndex].title}
+                  src={content.aCloserLook.projects[lightboxIndex]?.image}
+                  alt={content.aCloserLook.projects[lightboxIndex]?.title}
                   fill
                   className="object-contain"
                 />
@@ -1201,7 +1115,7 @@ export default function HarmonyPage() {
 
               <button 
                 onClick={() => setLightboxIndex((prev) => prev !== null ? (prev === content.aCloserLook.projects.length - 1 ? 0 : prev + 1) : null)}
-                className="p-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-all absolute right-4 z-10"
+                className="p-3 bg-white/5 hover:bg-white/10 text-white border border-white/10 transition-all absolute right-4 z-10 cursor-pointer"
               >
                 <ChevronRight size={24} />
               </button>
@@ -1209,10 +1123,10 @@ export default function HarmonyPage() {
 
             <div className="text-center py-4 px-6 bg-black/60 max-w-xl mx-auto w-full border border-white/5 mb-4">
               <span className="text-[10px] tracking-widest uppercase text-[#87735A] block mb-1">
-                {content.aCloserLook.projects[lightboxIndex].category}
+                {content.aCloserLook.projects[lightboxIndex]?.category}
               </span>
               <h4 className="font-serif text-lg font-light">
-                {content.aCloserLook.projects[lightboxIndex].title}
+                {content.aCloserLook.projects[lightboxIndex]?.title}
               </h4>
             </div>
           </div>
@@ -1237,10 +1151,10 @@ export default function HarmonyPage() {
                   </div>
                   <div>
                     <h4 className="font-serif font-medium text-sm text-[#1C1C1A]">
-                      VIP Concierge
+                      {content.concierge?.agentName || "VIP Concierge"}
                     </h4>
                     <span className="text-[10px] text-[#87735A] tracking-wider uppercase font-medium">
-                      Exclusive Assistance
+                      {content.concierge?.agentTitle || "Exclusive Assistance"}
                     </span>
                   </div>
                 </div>
@@ -1255,7 +1169,7 @@ export default function HarmonyPage() {
 
               <div className="space-y-2.5">
                 <a
-                  href="https://wa.me/17025707240?text=Hello%2C%20I%20would%20like%20exclusive%20information%20about%20the%20Harmony%20Homes%20VIP%20Concierge."
+                  href={`https://wa.me/${conciergePhone}?text=${conciergePrefill}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-between p-3 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 text-[#128C7E] font-medium text-xs transition-all group"
@@ -1388,7 +1302,7 @@ export default function HarmonyPage() {
                             setVipPasswordInput(e.target.value);
                             setVipPasswordError(false);
                           }}
-                          placeholder="Enter VIP password (e.g. RH2024)"
+                          placeholder={`Enter VIP password (e.g. ${content.concierge?.vipPassword || 'RH2024'})`}
                           className={`w-full pl-11 pr-4 py-3.5 bg-white border ${
                             vipPasswordError ? 'border-red-500' : 'border-[#C5A059]/40'
                           } rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#C5A059]/50 transition-all`}
@@ -1397,7 +1311,7 @@ export default function HarmonyPage() {
 
                       {vipPasswordError && (
                         <p className="text-xs text-red-600 font-medium">
-                          Incorrect password. Hint: Use the password <span className="font-bold">RH2024</span>.
+                          Incorrect password. Hint: Use the password <span className="font-bold">{content.concierge?.vipPassword || 'RH2024'}</span>.
                         </p>
                       )}
 
@@ -1414,7 +1328,7 @@ export default function HarmonyPage() {
                       <p className="text-[11px] text-[#87735A]">
                         Don&apos;t have a password yet?{' '}
                         <a 
-                          href="https://wa.me/17025707240?text=I%20request%20access%20to%20the%20VIP%20Lounge" 
+                          href={`https://wa.me/${conciergePhone}?text=${encodeURIComponent("I request access to the VIP Lounge")}`} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="underline font-semibold text-[#1C1C1A] hover:text-[#C5A059]"
@@ -1469,23 +1383,7 @@ export default function HarmonyPage() {
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {[
-                          {
-                            title: 'Price List & Lots',
-                            desc: 'Updated pricing and reserved availability.',
-                            file: 'Price_List_VIP.pdf'
-                          },
-                          {
-                            title: 'Architectural Guidelines',
-                            desc: 'Descriptive memorandum and luxury finishes.',
-                            file: 'Architectural_Guidelines.pdf'
-                          },
-                          {
-                            title: 'Flight & Helipad Protocols',
-                            desc: 'Specifications for landing and air transport.',
-                            file: 'Helipad_Protocols.pdf'
-                          }
-                        ].map((doc, idx) => (
+                        {(content.concierge?.documents || []).map((doc, idx) => (
                           <div 
                             key={idx} 
                             className="p-4 bg-white rounded-xl border border-[#C5A059]/25 hover:border-[#C5A059] transition-all flex flex-col justify-between"
@@ -1493,7 +1391,7 @@ export default function HarmonyPage() {
                             <div>
                               <div className="flex items-center justify-between mb-2">
                                 <span className="text-[9px] font-bold uppercase tracking-wider text-[#C5A059] bg-[#C5A059]/10 px-2 py-0.5 rounded-md">
-                                  PDF VIP
+                                  {doc.tag || "PDF VIP"}
                                 </span>
                                 <FileText size={14} className="text-[#87735A]" />
                               </div>
@@ -1527,7 +1425,7 @@ export default function HarmonyPage() {
                         </div>
 
                         <a 
-                          href="https://wa.me/17025707240?text=Hello%2C%20I%20am%20a%20VIP%20client%20and%20would%20like%20direct%20assistance." 
+                          href={`https://wa.me/${conciergePhone}?text=${encodeURIComponent("Hello, I am a VIP client and would like direct assistance.")}`} 
                           target="_blank" 
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 text-xs text-[#25D366] font-semibold hover:underline"
@@ -1558,34 +1456,36 @@ export default function HarmonyPage() {
                           </div>
                         ) : (
                           <form onSubmit={handleVipBookingSubmit} className="space-y-4">
-                            <div 
-                              onClick={() => setVipHelicopterSelected(!vipHelicopterSelected)}
-                              className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
-                                vipHelicopterSelected 
-                                  ? 'bg-[#C5A059]/10 border-[#C5A059] ring-1 ring-[#C5A059]' 
-                                  : 'bg-[#F9F6F0] border-gray-200 hover:border-[#C5A059]/50'
-                              }`}
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className={`p-2.5 rounded-lg ${vipHelicopterSelected ? 'bg-[#C5A059] text-white' : 'bg-gray-200 text-gray-600'}`}>
-                                  <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                                    <path d="M12 2c-.55 0-1 .45-1 1v1.07C7.03 4.54 4 7.92 4 12v3c0 1.1.9 2 2 2h1v2c0 .55.45 1 1 1s1-.45 1-1v-2h6v2c0 .55.45 1 1 1s1-.45 1-1v-2h1c1.1 0 2-.9 2-2v-3c0-4.08-3.03-7.46-7-7.93V3c0-.55-.45-1-1-1zm6 13H6v-3c0-3.31 2.69-6 6-6s6 2.69 6 6v3z"/>
-                                  </svg>
+                            {content.concierge?.enableHelicopterTours && (
+                              <div 
+                                onClick={() => setVipHelicopterSelected(!vipHelicopterSelected)}
+                                className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                                  vipHelicopterSelected 
+                                    ? 'bg-[#C5A059]/10 border-[#C5A059] ring-1 ring-[#C5A059]' 
+                                    : 'bg-[#F9F6F0] border-gray-200 hover:border-[#C5A059]/50'
+                                }`}
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className={`p-2.5 rounded-lg ${vipHelicopterSelected ? 'bg-[#C5A059] text-white' : 'bg-gray-200 text-gray-600'}`}>
+                                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                                      <path d="M12 2c-.55 0-1 .45-1 1v1.07C7.03 4.54 4 7.92 4 12v3c0 1.1.9 2 2 2h1v2c0 .55.45 1 1 1s1-.45 1-1v-2h6v2c0 .55.45 1 1 1s1-.45 1-1v-2h1c1.1 0 2-.9 2-2v-3c0-4.08-3.03-7.46-7-7.93V3c0-.55-.45-1-1-1zm6 13H6v-3c0-3.31 2.69-6 6-6s6 2.69 6 6v3z"/>
+                                    </svg>
+                                  </div>
+                                  <div>
+                                    <span className="text-xs font-bold uppercase tracking-wider text-[#1C1C1A] block">
+                                      {content.concierge?.helicopterTourTitle || "Exclusive Helicopter Visit"}
+                                    </span>
+                                    <span className="text-[11px] text-[#87735A] font-light">
+                                      {content.concierge?.helicopterTourDesc || "Includes air transport and executive reception at the private helipad."}
+                                    </span>
+                                  </div>
                                 </div>
-                                <div>
-                                  <span className="text-xs font-bold uppercase tracking-wider text-[#1C1C1A] block">
-                                    Exclusive Helicopter Visit
-                                  </span>
-                                  <span className="text-[11px] text-[#87735A] font-light">
-                                    Includes air transport and executive reception at the private helipad.
-                                  </span>
-                                </div>
-                              </div>
 
-                              <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${vipHelicopterSelected ? 'border-[#C5A059] bg-[#C5A059] text-white' : 'border-gray-300'}`}>
-                                {vipHelicopterSelected && <Check size={12} />}
+                                <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${vipHelicopterSelected ? 'border-[#C5A059] bg-[#C5A059] text-white' : 'border-gray-300'}`}>
+                                  {vipHelicopterSelected && <Check size={12} />}
+                                </div>
                               </div>
-                            </div>
+                            )}
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                               <div className="relative">

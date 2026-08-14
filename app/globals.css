@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: var(--font-hanken), 'Hanken Grotesk', sans-serif;
+  --font-serif: var(--font-playfair), 'Playfair Display', serif;
   --font-sans: var(--font-inter), sans-serif;
   --font-hanken: var(--font-hanken), 'Hanken Grotesk', sans-serif;
+  --font-playfair: var(--font-playfair), 'Playfair Display', serif;
+  --font-fraunces: var(--font-fraunces), 'Fraunces', serif;
   
   --color-brand-beige: #F9F9F7;
   --color-brand-taupe: #87735A;
@@ -47,8 +49,8 @@
   }
 
   h1, h2, h3, h4, h5, h6, .font-serif {
-    font-family: var(--font-hanken), 'Hanken Grotesk', sans-serif;
-    font-weight: 700;
+    font-family: var(--font-playfair), serif;
+    font-weight: 500;
   }
 }
 

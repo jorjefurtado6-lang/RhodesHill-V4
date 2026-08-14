@@ -1,6 +1,7 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
+  distDir: process.env.NODE_ENV === 'production' ? '.next' : '.next-dev',
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
@@ -37,7 +38,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  output: 'standalone',
   transpilePackages: ['motion'],
   webpack: (config, {dev}) => {
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
