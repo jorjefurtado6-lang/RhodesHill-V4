@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "rm -rf .next dist && NODE_ENV=production next build && cp -r .next dist",
+    "build": "rm -rf dist .next && next build",
     "start": "node server.ts",
     "lint": "eslint .",
     "clean": "next clean"
