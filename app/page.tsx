@@ -69,19 +69,32 @@ function SafariVideo({
   const [videoFailed, setVideoFailed] = useState(false);
 
   const fallback = 'https://staging.harmonyhomes.com/wp-content/uploads/2026/08/hero-video.mp4';
-  const effectiveSrc = videoFailed ? fallback : src;
+  
+  // Dynamically check for known broken/404 URLs from old configurations or stale databases
+  const isBrokenUrl = src && (
+    src.includes('Video-Background-1.mp4') || 
+    src.includes('HH-Brand-Video-01-no-captions.mp4')
+  );
+
+  const effectiveSrc = (videoFailed || isBrokenUrl) ? fallback : (src || fallback);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
+    // Enforce iOS and Android webkit/chrome autoplay requirements programmatically
     video.defaultMuted = true;
     video.muted = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+
+    // Force reloading the video with the correct sources
+    video.load();
 
     const playPromise = video.play();
     if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Autoplay policy fallback
+      playPromise.catch((error) => {
+        console.warn('Video autoplay failed or blocked by browser policy:', error);
       });
     }
   }, [effectiveSrc]);
@@ -96,14 +109,23 @@ function SafariVideo({
       playsInline
       preload="auto"
       poster={poster}
+      className={className}
       onError={() => {
         if (!videoFailed) {
           setVideoFailed(true);
         }
       }}
-      className={className}
     >
-      <source src={effectiveSrc} type="video/mp4" />
+      <source 
+        src={effectiveSrc} 
+        type="video/mp4" 
+        onError={() => {
+          // Trigger the state update if the video file fails to load (404, CORS, network errors)
+          if (!videoFailed) {
+            setVideoFailed(true);
+          }
+        }}
+      />
     </video>
   );
 }

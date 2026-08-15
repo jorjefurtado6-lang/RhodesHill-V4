@@ -1,10 +1,13 @@
 import { createServer } from 'http';
 import { parse } from 'url';
+import { resolve } from 'path';
 import next from 'next';
 
 const dev = process.env.NODE_ENV !== 'production';
 const port = 3000;
-const app = next({ dev, port });
+// Ensure we resolve the directory where server.ts actually lives
+const dir = typeof __dirname !== 'undefined' ? __dirname : resolve('.');
+const app = next({ dev, port, dir });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {

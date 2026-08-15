@@ -25,7 +25,7 @@ export const defaultSiteContent: SiteContent = {
     title: "We develop and build luxury custom homes.",
     subtitle: "Residences shaped by architecture, landscape, and the way you choose to live",
     scroll: "Scroll",
-    videoUrl: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Video-Background-1.mp4",
+    videoUrl: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/hero-video.mp4",
     posterUrl: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/Front-Exterior-Entry.jpg"
   },
   experience: {
@@ -33,7 +33,7 @@ export const defaultSiteContent: SiteContent = {
     title: "The Harmony Experience",
     description: "From the first conversation to the final walkthrough, every Harmony home follows one client’s vision. We begin in pre-design, aligning style, goals, and budget, then move through design and construction as a single, considered process. The result is a home that’s entirely yours, delivered without compromise.",
     button: "Learn More",
-    videoUrl: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/HH-Brand-Video-01-no-captions.mp4",
+    videoUrl: "https://staging.harmonyhomes.com/wp-content/uploads/2026/08/hero-video.mp4",
     stat1Value: "40+",
     stat1Label: "Years of Legacy",
     stat2Value: "12,000+",

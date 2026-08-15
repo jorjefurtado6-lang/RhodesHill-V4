@@ -10,7 +10,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  ...(isDev ? { distDir: '.next-dev' } : {}),
   // Allow access to remote image placeholder.
   images: {
     remotePatterns: [

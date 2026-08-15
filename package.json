@@ -9,8 +9,8 @@
     "ansi-regex": "6.2.2"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "NODE_ENV=production next build",
+    "dev": "next dev -p 3000",
+    "build": "rm -rf .next dist && NODE_ENV=production next build && cp -r .next dist",
     "start": "node server.ts",
     "lint": "eslint .",
     "clean": "next clean"
