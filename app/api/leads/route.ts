@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStoredLeads, saveStoredLead, updateStoredLeadStatus, deleteStoredLead } from '@/lib/storage';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
-    const leads = getStoredLeads();
+    const leads = await getStoredLeads();
     return NextResponse.json({ success: true, data: leads });
   } catch (error) {
     console.error('Failed to get leads:', error);
@@ -23,7 +25,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const created = saveStoredLead(body);
+    const created = await saveStoredLead(body);
     return NextResponse.json({
       success: true,
       message: 'Inquiry received successfully',
@@ -48,7 +50,7 @@ export async function PATCH(req: NextRequest) {
         { status: 400 }
       );
     }
-    const updated = updateStoredLeadStatus(id, status);
+    const updated = await updateStoredLeadStatus(id, status);
     if (!updated) {
       return NextResponse.json(
         { success: false, message: 'Lead not found' },
@@ -78,7 +80,7 @@ export async function DELETE(req: NextRequest) {
         { status: 400 }
       );
     }
-    deleteStoredLead(id);
+    await deleteStoredLead(id);
     return NextResponse.json({
       success: true,
       message: 'Lead deleted successfully',

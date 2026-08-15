@@ -91,12 +91,8 @@ const COLOR_PRESETS = [
 ];
 
 export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return Boolean(localStorage.getItem('harmony_admin_token'));
-    }
-    return false;
-  });
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [authChecking, setAuthChecking] = useState<boolean>(false);
   const [loginUsername, setLoginUsername] = useState<string>('');
   const [loginPassword, setLoginPassword] = useState<string>('');
@@ -108,6 +104,18 @@ export default function AdminPage() {
   const [originalContent, setOriginalContent] = useState<SiteContent>(defaultSiteContent);
   const [saveLoading, setSaveLoading] = useState<boolean>(false);
   const [saveToast, setSaveToast] = useState<{ show: boolean; msg: string; isError?: boolean }>({ show: false, msg: '' });
+
+  // Handle mounting on client-side to check localStorage without hydration issues
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMounted(true);
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('harmony_admin_token');
+      if (token) {
+        setIsAuthenticated(true);
+      }
+    }
+  }, []);
 
   // Leads
   const [leads, setLeads] = useState<LeadItem[]>([]);
@@ -301,7 +309,7 @@ export default function AdminPage() {
     }
   };
 
-  if (authChecking) {
+  if (!isMounted || authChecking) {
     return (
       <div className="min-h-screen bg-[#141413] flex items-center justify-center text-white">
         <RefreshCw className="animate-spin text-[#C5A059]" size={32} />

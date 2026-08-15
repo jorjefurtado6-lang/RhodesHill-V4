@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getStoredContent, saveStoredContent, resetStoredContent } from '@/lib/storage';
 import { SiteContent } from '@/lib/content-types';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
-    const content = getStoredContent();
+    const content = await getStoredContent();
     return NextResponse.json({ success: true, data: content });
   } catch (error) {
     console.error('Failed to get content:', error);
@@ -24,7 +26,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    saveStoredContent(body);
+    await saveStoredContent(body);
     return NextResponse.json({
       success: true,
       message: 'Site content updated successfully',
@@ -41,7 +43,7 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE() {
   try {
-    const defaultData = resetStoredContent();
+    const defaultData = await resetStoredContent();
     return NextResponse.json({
       success: true,
       message: 'Site content reset to factory defaults',
