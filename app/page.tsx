@@ -440,8 +440,8 @@ export default function HarmonyPage() {
             </span>
             <h1 
               id="hero-title"
-              style={{ fontSize: '61px', lineHeight: '62px', fontWeight: 'normal', textTransform: 'uppercase' }}
-              className="text-[61px] font-normal tracking-tight leading-[62px] mb-6 text-white uppercase"
+              style={{ fontFamily: 'var(--font-hanken)', fontSize: '61px', lineHeight: '62px', fontWeight: 'normal', textTransform: 'uppercase' }}
+              className="text-[61px] font-normal tracking-tight leading-[62px] mb-6 text-white uppercase font-hanken"
             >
               {content.hero?.title || "We develop and build luxury custom homes."}
             </h1>
